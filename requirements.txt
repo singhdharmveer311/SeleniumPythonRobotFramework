@@ -1,0 +1,41 @@
+# Robot Framework core
+robotframework>=7.0,<9.0
+
+# Selenium WebDriver integration
+robotframework-seleniumlibrary>=6.2.0
+
+# Browser automation
+selenium>=4.15.2
+
+# Additional useful libraries
+robotframework-requests>=0.9.5
+robotframework-jsonlibrary>=0.5.0
+robotframework-databaselibrary>=1.2.4
+
+# Test reporting and documentation (relaxed to allow compatible versions)
+robotframework-reportportal>=5.3.0
+
+# Parallel execution
+robotframework-pabot>=2.16.0
+
+# Development dependencies
+robotframework-lint>=1.1
+robotframework-tidy>=4.6.0
+
+# Web driver management
+webdriver-manager>=3.8.6
+
+# Payment-specific dependencies
+cryptography>=41.0.0          # Encryption/decryption for payment data
+faker>=18.0.0                 # Generate realistic test payment data
+PyJWT>=2.8.0                  # JSON Web Token handling
+requests-mock>=1.11.0         # Mock HTTP requests for payment gateway testing
+stripe>=7.0.0                 # Stripe payment gateway integration
+paypal-checkout-serversdk>=1.0.1  # PayPal integration
+boto3>=1.28.0                 # AWS services (for cloud-based payment processing)
+pymongo>=4.5.0                # MongoDB integration for payment records
+psycopg2-binary>=2.9.7        # PostgreSQL for payment databases
+sqlalchemy>=2.0.0             # ORM for database operations
+pytest>=7.4.0                 # Additional testing framework
+pytest-html>=3.2.0            # HTML test reports
+allure-robotframework>=2.13.0 # Enhanced test reporting

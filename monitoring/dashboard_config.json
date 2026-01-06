@@ -1,0 +1,288 @@
+{
+  "dashboard": {
+    "title": "Enterprise Payment Testing Framework - Monitoring Dashboard",
+    "version": "1.0.0",
+    "last_updated": "2024-01-15T10:00:00Z",
+    "refresh_interval_seconds": 300
+  },
+  "metrics": {
+    "test_execution": {
+      "title": "Test Execution Metrics",
+      "description": "Real-time test execution statistics",
+      "widgets": [
+        {
+          "type": "counter",
+          "title": "Total Tests Executed",
+          "metric": "tests.total_count",
+          "thresholds": {
+            "warning": 100,
+            "critical": 50
+          }
+        },
+        {
+          "type": "gauge",
+          "title": "Test Success Rate",
+          "metric": "tests.success_rate",
+          "min": 0,
+          "max": 100,
+          "thresholds": {
+            "green": 95,
+            "yellow": 90,
+            "red": 80
+          }
+        },
+        {
+          "type": "line_chart",
+          "title": "Test Execution Trend",
+          "metric": "tests.execution_time",
+          "time_range": "7d",
+          "aggregation": "daily"
+        }
+      ]
+    },
+    "payment_processing": {
+      "title": "Payment Processing Metrics",
+      "description": "Payment gateway and processing performance",
+      "widgets": [
+        {
+          "type": "histogram",
+          "title": "Payment Response Times",
+          "metric": "payments.response_time_ms",
+          "buckets": [100, 500, 1000, 2000, 5000]
+        },
+        {
+          "type": "pie_chart",
+          "title": "Payment Methods Distribution",
+          "metric": "payments.method_distribution",
+          "labels": ["credit_card", "apple_pay", "google_pay", "paypal", "bank_transfer"]
+        },
+        {
+          "type": "bar_chart",
+          "title": "Payment Gateway Success Rates",
+          "metric": "payments.gateway_success_rate",
+          "gateways": ["stripe", "paypal", "braintree", "adyen"]
+        }
+      ]
+    },
+    "security_compliance": {
+      "title": "Security & Compliance Metrics",
+      "description": "PCI DSS compliance and security monitoring",
+      "widgets": [
+        {
+          "type": "status_indicator",
+          "title": "PCI DSS Compliance Status",
+          "metric": "security.pci_dss_compliant",
+          "expected_value": true
+        },
+        {
+          "type": "counter",
+          "title": "Security Violations Detected",
+          "metric": "security.violations_count",
+          "thresholds": {
+            "warning": 5,
+            "critical": 10
+          }
+        },
+        {
+          "type": "table",
+          "title": "Recent Security Events",
+          "metric": "security.events_log",
+          "columns": ["timestamp", "event_type", "severity", "details"],
+          "max_rows": 20
+        }
+      ]
+    },
+    "performance_monitoring": {
+      "title": "Performance Monitoring",
+      "description": "System performance and load testing metrics",
+      "widgets": [
+        {
+          "type": "line_chart",
+          "title": "Memory Usage Trend",
+          "metric": "performance.memory_usage_mb",
+          "time_range": "1h"
+        },
+        {
+          "type": "line_chart",
+          "title": "CPU Usage Trend",
+          "metric": "performance.cpu_usage_percent",
+          "time_range": "1h"
+        },
+        {
+          "type": "histogram",
+          "title": "Transaction Throughput",
+          "metric": "performance.transactions_per_second",
+          "time_range": "1h"
+        }
+      ]
+    },
+    "error_tracking": {
+      "title": "Error Tracking & Analysis",
+      "description": "Error patterns and failure analysis",
+      "widgets": [
+        {
+          "type": "bar_chart",
+          "title": "Top Error Types",
+          "metric": "errors.type_distribution",
+          "top_n": 10
+        },
+        {
+          "type": "line_chart",
+          "title": "Error Rate Trend",
+          "metric": "errors.failure_rate",
+          "time_range": "7d"
+        },
+        {
+          "type": "table",
+          "title": "Recent Failures",
+          "metric": "errors.recent_failures",
+          "columns": ["timestamp", "test_name", "error_message", "environment"],
+          "max_rows": 50
+        }
+      ]
+    },
+    "ci_cd_integration": {
+      "title": "CI/CD Pipeline Metrics",
+      "description": "Continuous integration and deployment metrics",
+      "widgets": [
+        {
+          "type": "status_indicator",
+          "title": "Pipeline Status",
+          "metric": "ci_cd.pipeline_status",
+          "expected_value": "success"
+        },
+        {
+          "type": "counter",
+          "title": "Deployments Today",
+          "metric": "ci_cd.deployment_count"
+        },
+        {
+          "type": "line_chart",
+          "title": "Build Duration Trend",
+          "metric": "ci_cd.build_duration_minutes",
+          "time_range": "30d"
+        }
+      ]
+    }
+  },
+  "alerts": {
+    "test_failures": {
+      "condition": "tests.success_rate < 90",
+      "severity": "critical",
+      "message": "Test success rate below 90%",
+      "channels": ["slack", "email", "pagerduty"]
+    },
+    "security_violations": {
+      "condition": "security.violations_count > 5",
+      "severity": "high",
+      "message": "Multiple security violations detected",
+      "channels": ["slack", "email", "security_team"]
+    },
+    "pci_compliance_breach": {
+      "condition": "security.pci_dss_compliant == false",
+      "severity": "critical",
+      "message": "PCI DSS compliance breach detected",
+      "channels": ["slack", "email", "compliance_team", "executives"]
+    },
+    "performance_degradation": {
+      "condition": "performance.response_time_p95 > 2000",
+      "severity": "warning",
+      "message": "Payment response times degraded",
+      "channels": ["slack", "email"]
+    },
+    "high_error_rate": {
+      "condition": "errors.failure_rate > 10",
+      "severity": "high",
+      "message": "Error rate above 10%",
+      "channels": ["slack", "email", "development_team"]
+    }
+  },
+  "data_sources": {
+    "test_results": {
+      "type": "robot_framework_output",
+      "path": "results/**/*.xml",
+      "format": "junit_xml"
+    },
+    "performance_metrics": {
+      "type": "json_files",
+      "path": "results/metrics/*.json",
+      "retention_days": 90
+    },
+    "security_logs": {
+      "type": "log_files",
+      "path": "logs/security/*.log",
+      "format": "cef"
+    },
+    "ci_cd_data": {
+      "type": "github_api",
+      "repository": "${GITHUB_REPOSITORY}",
+      "token": "${{ secrets.GITHUB_TOKEN }}"
+    }
+  },
+  "reporting": {
+    "daily_reports": {
+      "enabled": true,
+      "schedule": "0 6 * * *",
+      "recipients": ["qa-team@company.com", "payments-team@company.com"],
+      "format": "html",
+      "include_charts": true
+    },
+    "weekly_compliance_report": {
+      "enabled": true,
+      "schedule": "0 6 * * 1",
+      "recipients": ["compliance@company.com", "auditors@company.com"],
+      "format": "pdf",
+      "pci_dss_focused": true
+    },
+    "monthly_executive_summary": {
+      "enabled": true,
+      "schedule": "0 6 1 * *",
+      "recipients": ["executives@company.com", "board@company.com"],
+      "format": "pdf",
+      "high_level_metrics": true
+    }
+  },
+  "integrations": {
+    "slack": {
+      "webhook_url": "${{ secrets.SLACK_WEBHOOK_URL }}",
+      "channels": {
+        "alerts": "#payment-alerts",
+        "reports": "#payment-reports",
+        "security": "#security-alerts"
+      }
+    },
+    "email": {
+      "smtp_server": "smtp.company.com",
+      "smtp_port": 587,
+      "username": "${{ secrets.SMTP_USERNAME }}",
+      "password": "${{ secrets.SMTP_PASSWORD }}",
+      "from_address": "payments-testing@company.com"
+    },
+    "pagerduty": {
+      "integration_key": "${{ secrets.PAGERDUTY_INTEGRATION_KEY }}",
+      "service_name": "Payment Testing Framework"
+    },
+    "datadog": {
+      "api_key": "${{ secrets.DATADOG_API_KEY }}",
+      "app_key": "${{ secrets.DATADOG_APP_KEY }}",
+      "tags": ["service:payments", "team:qa", "framework:robot"]
+    }
+  },
+  "retention_policies": {
+    "test_results": {
+      "raw_xml": 90,
+      "html_reports": 365,
+      "log_files": 180
+    },
+    "metrics_data": {
+      "performance_metrics": 365,
+      "security_events": 2555,
+      "ci_cd_metrics": 180
+    },
+    "audit_logs": {
+      "compliance_audits": 2555,
+      "security_incidents": 2555,
+      "access_logs": 365
+    }
+  }
+}
